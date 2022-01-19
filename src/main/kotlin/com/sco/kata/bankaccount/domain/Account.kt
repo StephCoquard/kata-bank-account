@@ -17,4 +17,8 @@ class Account() {
         }
         this.balance = balance subtract withdrawal.amount
     }
+
+    fun printStatement(printer: Printer) {
+        printer.print(Statement())
+    }
 }

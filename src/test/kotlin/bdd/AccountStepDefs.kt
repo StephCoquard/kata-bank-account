@@ -54,5 +54,23 @@ class AccountStepDefs : En {
             assertThat(exceptionHandler.getExceptions().isNotEmpty())
         }
 
+        Then("The statement contains the following statement items") { table: DataTable ->
+            val expected: List<Tuple> = table.asMaps().map {
+                Tuple(
+                    OperationTypeEnum.valueOf(it.getValue("type")),
+                    Amount(it.getValue("amount").toBigDecimal()),
+                    Balance(it.getValue("balance").toBigDecimal())
+                )
+            }
+            val printer = PrinterForTest()
+
+            account.printStatement(printer)
+
+            assertThat(printer.statementItems).extracting(
+                StatementItem::operationType,
+                StatementItem::operationAmount,
+                StatementItem::balance)
+                .isEqualTo(expected)
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.sco.kata.bankaccount.domain
 
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
@@ -17,7 +17,7 @@ class AccountTest {
 
         account.deposit(deposit)
 
-        Assertions.assertThat(account.balance)
+        assertThat(account.balance)
             .isEqualTo(Balance(BigDecimal.TEN))
     }
 
@@ -29,7 +29,7 @@ class AccountTest {
 
         account.deposit(Deposit(Amount(BigDecimal.valueOf(15)), date))
 
-        Assertions.assertThat(account.balance)
+        assertThat(account.balance)
             .isEqualTo(Balance(BigDecimal.valueOf(25)))
     }
 
@@ -44,7 +44,7 @@ class AccountTest {
 
         account.withdraw(withdrawal)
 
-        Assertions.assertThat(account.balance)
+        assertThat(account.balance)
             .isEqualTo(Balance(BigDecimal.ZERO))
     }
 
@@ -60,7 +60,7 @@ class AccountTest {
 
         account.withdraw(withdrawal)
 
-        Assertions.assertThat(account.balance)
+        assertThat(account.balance)
             .isEqualTo(Balance(BigDecimal.TEN))
     }
 
@@ -76,7 +76,17 @@ class AccountTest {
 
         val exception = assertThrows<NegativeBalanceException> { account.withdraw(withdrawal) }
 
-        Assertions.assertThat(exception.message)
+        assertThat(exception.message)
             .isEqualTo("Overdraft forbidden!")
+    }
+
+    @Test
+    fun `Should print no items when no operations in account`() {
+        val account = Account()
+        val printer = PrinterForTest();
+
+        account.printStatement(printer)
+
+        assertThat(printer.statementItems).isEmpty()
     }
 }
