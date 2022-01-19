@@ -13,3 +13,10 @@ Feature: Withdrawal
       | DEPOSIT | 25     |
     When A user withdraws an amount of 15
     Then The account balance should be 10
+
+  Scenario: Withdraw a negative amount
+    Given There is an account with the operations
+      | type    | amount |
+    When A user withdraws an amount of -10
+    Then The account balance should be 0
+    Then An error occurs
