@@ -12,3 +12,10 @@ Feature: Deposit
       | DEPOSIT | 10     |
     When A user deposits an amount of 15
     Then The account balance should be 25
+
+  Scenario: Deposit a negative amount
+    Given There is an account with the operations
+      | type    | amount |
+    When A user deposits an amount of -15
+    Then The account balance should be 0
+    Then An error occurs

@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 class AccountStepDefs : En {
 
     private lateinit var account: Account
+    private lateinit var exceptionHandler: ExceptionHandler
 
     init {
         Given("There is an account with the operations") { table: DataTable ->
@@ -24,12 +25,23 @@ class AccountStepDefs : En {
         }
 
         When("A user deposits an amount of {bigdecimal}") { amount: BigDecimal ->
-            val deposit = Deposit(Amount(amount), LocalDateTime.now())
-            account.deposit(deposit)
+            exceptionHandler = ExceptionHandler()
+
+            try {
+                val deposit = Deposit(Amount(amount), LocalDateTime.now())
+                account.deposit(deposit)
+            } catch (e: Exception) {
+                exceptionHandler.add(e)
+            }
         }
 
         Then("The account balance should be {bigdecimal}") { balance: BigDecimal ->
             assertThat(account.balance).isEqualTo(Balance(balance))
         }
+
+        Then("An error occurs") {
+            assertThat(exceptionHandler.getExceptions().isNotEmpty())
+        }
+
     }
 }
