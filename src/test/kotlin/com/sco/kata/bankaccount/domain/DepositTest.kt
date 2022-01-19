@@ -15,6 +15,6 @@ class DepositTest {
         }
 
         assertThat(exception.message)
-            .isEqualTo("Impossible to create a deposit with a negative amount")
+            .isEqualTo("Impossible to create an operation with a negative amount")
     }
 }

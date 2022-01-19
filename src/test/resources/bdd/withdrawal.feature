@@ -20,3 +20,10 @@ Feature: Withdrawal
     When A user withdraws an amount of -10
     Then The account balance should be 0
     Then An error occurs
+
+  Scenario: Withdraw an amount that should lead to a negative balance
+    Given There is an account with the operations
+      | type    | amount |
+    When A user withdraws an amount of 10
+    Then The account balance should be 0
+    Then An error occurs

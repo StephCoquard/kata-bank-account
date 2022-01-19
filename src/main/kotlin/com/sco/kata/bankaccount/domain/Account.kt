@@ -12,6 +12,9 @@ class Account() {
     }
 
     fun withdraw(withdrawal: Withdrawal) {
+        if (withdrawal.amount.value > balance.value) {
+            throw NegativeBalanceException()
+        }
         this.balance = balance subtract withdrawal.amount
     }
 }

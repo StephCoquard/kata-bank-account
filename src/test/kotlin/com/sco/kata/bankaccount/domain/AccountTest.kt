@@ -2,6 +2,7 @@ package com.sco.kata.bankaccount.domain
 
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -61,5 +62,21 @@ class AccountTest {
 
         Assertions.assertThat(account.balance)
             .isEqualTo(Balance(BigDecimal.TEN))
+    }
+
+    @Test
+    fun `Should throw exception when withdrawing an amount superior to the account balance`() {
+        val depositAmount = Amount(BigDecimal.TEN)
+        val withdrawalAmount = Amount(BigDecimal.valueOf(20))
+        val depositDate = LocalDateTime.now()
+        val withdrawalDate = depositDate.minusDays(1)
+        val account = Account()
+        account.deposit(Deposit(depositAmount, depositDate))
+        val withdrawal = Withdrawal(withdrawalAmount, withdrawalDate)
+
+        val exception = assertThrows<NegativeBalanceException> { account.withdraw(withdrawal) }
+
+        Assertions.assertThat(exception.message)
+            .isEqualTo("Overdraft forbidden!")
     }
 }
