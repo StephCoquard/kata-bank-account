@@ -20,7 +20,7 @@ class AccountStepDefs : En {
             table.asMaps().map {
                 val type = it.getValue("type")
                 val amount = it.getValue("amount").toBigDecimal()
-                account.deposit(Deposit(Amount(amount), LocalDateTime.now()))
+                addOperationToAccount(type, amount)
             }
         }
 
@@ -71,6 +71,14 @@ class AccountStepDefs : En {
                 StatementItem::operationAmount,
                 StatementItem::balance)
                 .isEqualTo(expected)
+        }
+    }
+
+    private fun addOperationToAccount(type: String?, amount: BigDecimal) {
+        if (type == OperationTypeEnum.DEPOSIT.name) {
+            account.deposit(Deposit(Amount(amount), LocalDateTime.now()))
+        } else {
+            account.withdraw(Withdrawal(Amount(amount), LocalDateTime.now()))
         }
     }
 }

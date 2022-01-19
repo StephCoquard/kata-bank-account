@@ -4,9 +4,13 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class Withdrawal(
-    val amount: Amount,
-    val date: LocalDateTime
-) {
+    override val amount: Amount,
+    override val date: LocalDateTime
+): Operation {
+
+    override val type: OperationTypeEnum
+        get() = OperationTypeEnum.WITHDRAWAL
+
     init {
         if (amount.value < BigDecimal.ZERO) {
             throw NegativeAmountException()

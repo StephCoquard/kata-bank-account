@@ -1,6 +1,7 @@
 package com.sco.kata.bankaccount.domain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.groups.Tuple
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
@@ -88,5 +89,32 @@ class AccountTest {
         account.printStatement(printer)
 
         assertThat(printer.statementItems).isEmpty()
+    }
+
+    @Test
+    fun `Should print items in reversed order when requesting printing`() {
+        val account = Account()
+        val deposit1 = Deposit(Amount(BigDecimal.TEN), LocalDateTime.of(2022, 1, 1, 0, 0, 0))
+        val deposit2 = Deposit(Amount(BigDecimal.valueOf(15)), LocalDateTime.of(2022, 1, 2, 0, 0, 0))
+        val withdrawal = Withdrawal(Amount(BigDecimal.valueOf(8)), LocalDateTime.of(2022, 1, 3, 0, 0, 0))
+        account.deposit(deposit1);
+        account.deposit(deposit2);
+        account.withdraw(withdrawal);
+        val printer = PrinterForTest()
+
+        account.printStatement(printer)
+
+        assertThat(printer.statementItems)
+            .extracting(
+                StatementItem::operationType,
+                StatementItem::operationAmount,
+                StatementItem::operationDate,
+                StatementItem::balance
+            )
+            .containsExactly(
+                Tuple.tuple(withdrawal.type, withdrawal.amount, withdrawal.date, Balance(BigDecimal.valueOf(17))),
+                Tuple.tuple(deposit2.type, deposit2.amount, deposit2.date, Balance(BigDecimal.valueOf(25))),
+                Tuple.tuple(deposit1.type, deposit1.amount, deposit1.date, Balance(BigDecimal.TEN))
+            )
     }
 }

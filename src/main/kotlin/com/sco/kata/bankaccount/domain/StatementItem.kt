@@ -7,4 +7,9 @@ data class StatementItem constructor(
     val operationAmount: Amount,
     val operationDate: LocalDateTime,
     val balance: Balance
-)
+) {
+    companion object {
+        fun from(operation: Operation, balance: Balance): StatementItem =
+            StatementItem(operation.type, operation.amount, operation.date, balance)
+    }
+}
