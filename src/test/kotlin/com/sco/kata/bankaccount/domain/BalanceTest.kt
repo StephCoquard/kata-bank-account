@@ -25,4 +25,20 @@ class BalanceTest {
 
         assertThat(result).isEqualTo(Balance(BigDecimal.valueOf(15)))
     }
+
+    @Test
+    fun `Should throw exception if subtract amount of 20 on a balance of 10`() {
+        val depositAmount = Amount(BigDecimal.TEN)
+        val withdrawalAmount = Amount(BigDecimal.valueOf(20))
+        val depositDate = LocalDateTime.now()
+        val withdrawalDate = depositDate.minusDays(1)
+        val account = Account()
+        account.deposit(Deposit(depositAmount, depositDate))
+        val withdrawal = Withdrawal(withdrawalAmount, withdrawalDate)
+
+        val exception = assertThrows<NegativeBalanceException> { account.withdraw(withdrawal) }
+
+        assertThat(exception.message)
+            .isEqualTo("Overdraft forbidden!")
+    }
 }
