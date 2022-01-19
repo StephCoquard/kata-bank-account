@@ -35,6 +35,17 @@ class AccountStepDefs : En {
             }
         }
 
+        When("A user withdraws an amount of {bigdecimal}") { amount: BigDecimal ->
+            exceptionHandler = ExceptionHandler()
+
+            try {
+                val withdrawal = Withdrawal(Amount(amount), LocalDateTime.now())
+                account.withdraw(withdrawal)
+            } catch (e: Exception) {
+                exceptionHandler.add(e)
+            }
+        }
+
         Then("The account balance should be {bigdecimal}") { balance: BigDecimal ->
             assertThat(account.balance).isEqualTo(Balance(balance))
         }

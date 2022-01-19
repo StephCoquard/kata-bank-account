@@ -31,4 +31,19 @@ class AccountTest {
         Assertions.assertThat(account.balance)
             .isEqualTo(Balance(BigDecimal.valueOf(25)))
     }
+
+    @Test
+    fun `Should have balance of 0 when withdrawing an amout of 10 on an account with a balance of 10`() {
+        val amount = Amount(BigDecimal.valueOf(10))
+        val depositDate = LocalDateTime.now()
+        val withdrawalDate = depositDate.minusDays(1)
+        val account = Account()
+        account.deposit(Deposit(amount, depositDate))
+        val withdrawal = Withdrawal(amount, withdrawalDate)
+
+        account.withdraw(withdrawal)
+
+        Assertions.assertThat(account.balance)
+            .isEqualTo(Balance(BigDecimal.ZERO))
+    }
 }

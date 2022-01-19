@@ -10,4 +10,8 @@ class Account() {
     fun deposit(deposit: Deposit) {
         this.balance = balance add deposit.amount
     }
+
+    fun withdraw(withdrawal: Withdrawal) {
+        this.balance = Balance(BigDecimal.ZERO)
+    }
 }
