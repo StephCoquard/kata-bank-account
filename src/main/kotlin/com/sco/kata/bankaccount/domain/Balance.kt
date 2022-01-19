@@ -4,4 +4,5 @@ import java.math.BigDecimal
 
 data class Balance(val value: BigDecimal) {
     infix fun add(amount: Amount): Balance = Balance(this.value.plus(amount.value))
+    infix fun subtract(amount: Amount): Balance = Balance(this.value.minus(amount.value))
 }

@@ -12,6 +12,6 @@ class Account() {
     }
 
     fun withdraw(withdrawal: Withdrawal) {
-        this.balance = Balance(BigDecimal.ZERO)
+        this.balance = balance subtract withdrawal.amount
     }
 }
