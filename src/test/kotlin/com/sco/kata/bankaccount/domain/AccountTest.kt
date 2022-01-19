@@ -19,4 +19,16 @@ class AccountTest {
         Assertions.assertThat(account.balance)
             .isEqualTo(Balance(BigDecimal.TEN))
     }
+
+    @Test
+    fun `Should have balance of 25 when deposit an amount of 15 on an account with a balance of 10`() {
+        val date = LocalDateTime.now()
+        val account = Account()
+        account.deposit(Deposit(Amount(BigDecimal.TEN), date))
+
+        account.deposit(Deposit(Amount(BigDecimal.valueOf(15)), date))
+
+        Assertions.assertThat(account.balance)
+            .isEqualTo(Balance(BigDecimal.valueOf(25)))
+    }
 }

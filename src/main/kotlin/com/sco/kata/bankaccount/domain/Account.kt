@@ -8,6 +8,6 @@ class Account() {
         private set
 
     fun deposit(deposit: Deposit) {
-        this.balance = Balance(deposit.amount.value)
+        this.balance = balance add deposit.amount
     }
 }
